@@ -28,4 +28,7 @@ src/head.o: src/head.c /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/stdlib.h /usr/include/string.h \
  /usr/include/xlocale.h /usr/include/i386-linux-gnu/bits/string.h \
  /usr/include/i386-linux-gnu/bits/string2.h \
- /usr/include/i386-linux-gnu/bits/string3.h include/head.h
+ /usr/include/i386-linux-gnu/bits/string3.h /usr/include/curses.h \
+ /usr/include/ncurses_dll.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdbool.h /usr/include/unctrl.h \
+ include/head.h

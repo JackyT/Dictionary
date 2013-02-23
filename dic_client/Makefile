@@ -60,7 +60,7 @@
 MY_CFLAGS = -I include
 
 # The linker options.
-MY_LIBS   =
+MY_LIBS   = -lcurses
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = -Wall

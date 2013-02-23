@@ -18,7 +18,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <curses.h>
 #include "head.h"
+
+void print_list(void)
+{
+	printf("\n\n\n\n");
+	printf("\t\t|-------------------menu-----------------|\n");
+	printf("\t\t|-------| 1.   search one word   |-------|\n");
+	printf("\t\t|-------| 2.     misty search    |-------|\n");
+	printf("\t\t|-------| 3.    add one word     |-------|\n");
+	printf("\t\t|-------| 4.   delete one word   |-------|\n");
+	printf("\t\t|-------| 5.      statistics     |-------|\n");
+	printf("\t\t|-------| 6. sentence translator |-------|\n");
+	printf("\t\t|-------| 7. search from remote  |-------|\n");
+	printf("\t\t|-------| 8.   change password   |-------|\n");
+	printf("\t\t|-------| 9.        help         |-------|\n");
+	printf("\t\t|-------| 10.       exit         |-------|\n");
+	printf("\t\t|----------------------------------------|\n");
+	printf("\n\n");
+	printf("please enter 1~10\n");
+}
 int menu(void)
 {
 	char str[64];
@@ -69,8 +89,12 @@ void help_viewer(void)
 }
 void gate(void)
 {
-	char pass[] = "123";
-	char buf[10];
+	FILE *fp = fopen("./doc/password","r");
+	char pass[17];
+	char buf[17];
+	size_t wordsize= fread(pass,sizeof(char),sizeof(pass),fp);	
+	pass[wordsize] = '\0';
+	//puts(pass);	
 	char ch;
 	puts("Please input password:");
 	int i = 3;
@@ -81,9 +105,14 @@ void gate(void)
 		while((ch = getchar()) != '\n')	
 		{
 			buf[j++] = ch;
+			if(j > 16){
+				printf("\nThe password is limited to 16.Please input your password again.\n");		
+				i = 0;
+				continue;
+			}
 		}
 		buf[j] = '\0';
-		if(strcmp(pass,buf) == 0){
+		if(strncmp(pass,buf,wordsize) == 0){
 			puts("\t\tInentity Confirmed\tWelcome !");
 			break;	
 		}
@@ -97,5 +126,29 @@ void gate(void)
 		else
 			printf("Password is incorrect,%d changes left.\n",i);
 	}
+	fclose(fp);
 
+}
+int password_input(char *password,int sizelimit)
+{
+	int i = 0;
+	char ch;
+	int overflag = 0;
+	while(1)
+	{
+		if((ch = getchar()) == '\n')	
+			break;
+		if(i >= sizelimit){
+			password[sizelimit] = '\0';
+			overflag = 1;
+			continue;
+		}
+		password[i++] = ch;
+		//addch('*');
+
+	}
+	if(overflag == 1)
+		return -1;
+	password[i] = '\0';
+	return 0;
 }

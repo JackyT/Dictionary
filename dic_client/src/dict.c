@@ -33,23 +33,7 @@
 
 #define _PORT_ 8000
 #define BUFFER 4096
-void print_list(void)
-{
-	printf("\n\n\n\n");
-	printf("\t\t|-------------------menu-----------------|\n");
-	printf("\t\t|-------| 1.   search one word   |-------|\n");
-	printf("\t\t|-------| 2.     misty search    |-------|\n");
-	printf("\t\t|-------| 3.    add one word     |-------|\n");
-	printf("\t\t|-------| 4.   delete one word   |-------|\n");
-	printf("\t\t|-------| 5.      statistics     |-------|\n");
-	printf("\t\t|-------| 6. sentence translator |-------|\n");
-	printf("\t\t|-------| 7. search from remote  |-------|\n");
-	printf("\t\t|-------| 8.        help         |-------|\n");
-	printf("\t\t|-------| 9.        exit         |-------|\n");
-	printf("\t\t|----------------------------------------|\n");
-	printf("\n\n");
-	printf("please enter 1~9\n");
-}
+
 
 
 int main(int argc, const char *argv[])
@@ -321,12 +305,40 @@ int main(int argc, const char *argv[])
 			}
 		case 8:
 			{
+				printf("Please input your new password(16 item limited):\n");
+				char newpass[17];
+				char pass_commit[17];
+				int rec;
+				rec = password_input(newpass,sizeof(newpass));
+				if(rec != 0){
+					printf("Create new password failed.Your password is too long");	
+					break;
+				}
+				printf("Please confirm your password:\n");
+				rec = password_input(pass_commit,sizeof(pass_commit));			
+				if(rec != 0){
+					printf("Create new password failed.");	
+					break;
+				}
+				rec = strcmp(newpass,pass_commit);
+				if(rec != 0){
+					printf("Confirm failed!");	
+					break;
+				}
+				printf("Create new password successfully");
+				FILE *fp = fopen("./doc/password","w+");		
+				fwrite(newpass,sizeof(char),strlen(newpass),fp);	
+				fclose(fp);
+				break;
+			}
+		case 9:
+			{
 				help_viewer();
 				printf("press enter back to main menu..");
 				while(getchar() != '\n');
 				break;
 			}
-		case 9:
+		case 10:
 			{
 				printf("\t\t|-------|        Goodbye!        |-------|\n");
 				Link_destroy(root);	
@@ -337,7 +349,7 @@ int main(int argc, const char *argv[])
 			}
 		default:
 			{
-				printf("please input number 1~8\n");
+				printf("please input number 1~10\n");
 				break;
 			}
 		}
